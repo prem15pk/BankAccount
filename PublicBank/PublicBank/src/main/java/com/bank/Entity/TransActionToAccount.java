@@ -3,16 +3,12 @@ package com.bank.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
 @Entity
-@Table(name="transaction")
-public class Transaction {
-
+public class TransActionToAccount {
     public enum TransActionTypes{Debit,Credit,Deposit}
     @Id
     @GeneratedValue
@@ -33,19 +29,18 @@ public class Transaction {
     @ManyToOne(cascade = CascadeType.ALL , targetEntity = Account.class)
     private Account accountList;
 
-
+   // @JsonFormat(pattern="dd/MM/yyyy hh:MM:ss")
     private LocalDateTime transactionDate ;
 
-    //DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     private  int customerId;
 
 
 
-    public Transaction() {
+    public TransActionToAccount() {
     }
 
-    public Transaction(int tid, int blance, Account fromAccount, Account toAccount, int transactionAmount,
-                       String discription, String transActionType, boolean isActive, Account accountList, LocalDateTime transactionDate) {
+    public TransActionToAccount(int tid, int blance, Account fromAccount, Account toAccount, int transactionAmount,
+                                String discription, String transActionType, boolean isActive, Account accountList, LocalDateTime transactionDate, int customerId) {
         this.tid = tid;
         this.blance = blance;
         this.fromAccount = fromAccount;
@@ -56,6 +51,23 @@ public class Transaction {
         this.isActive = isActive;
         this.accountList = accountList;
         this.transactionDate = transactionDate;
+        this.customerId = customerId;
+    }
+
+    public int getTid() {
+        return tid;
+    }
+
+    public void setTid(int tid) {
+        this.tid = tid;
+    }
+
+    public int getBlance() {
+        return blance;
+    }
+
+    public void setBlance(int blance) {
+        this.blance = blance;
     }
 
     public Account getFromAccount() {
@@ -82,24 +94,6 @@ public class Transaction {
         this.transactionAmount = transactionAmount;
     }
 
-    public int getId() {
-        return tid;
-    }
-
-    public void setId(int id) {
-        this.tid = id;
-    }
-
-
-
-    public int getBlance() {
-        return blance;
-    }
-
-    public void setBlance(int blance) {
-        this.blance = blance;
-    }
-
     public String getDiscription() {
         return discription;
     }
@@ -108,20 +102,12 @@ public class Transaction {
         this.discription = discription;
     }
 
-    public LocalDateTime getTransactionDate() {
-        return transactionDate;
+    public String getTransActionType() {
+        return transActionType;
     }
 
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-    public int getTid() {
-        return tid;
-    }
-
-    public void setTid(int tid) {
-        this.tid = tid;
+    public void setTransActionType(String transActionType) {
+        this.transActionType = transActionType;
     }
 
     public boolean isActive() {
@@ -140,12 +126,12 @@ public class Transaction {
         this.accountList = accountList;
     }
 
-    public String getTransActionType() {
-        return transActionType;
+    public LocalDateTime getTransactionDate() {
+        return transactionDate;
     }
 
-    public void setTransActionType(String transActionType) {
-        this.transActionType = transActionType;
+    public void setTransactionDate(LocalDateTime transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
     public int getCustomerId() {
@@ -156,19 +142,4 @@ public class Transaction {
         this.customerId = customerId;
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "tid=" + tid +
-
-                ", balance=" + blance +
-                ", fromAccount=" + fromAccount +
-                ", toAccount='" + toAccount + '\'' +
-                ", transactionAmount=" + transactionAmount +
-                ", description='" + discription + '\'' +
-                ", isActive=" + isActive +
-                ", accountList=" + accountList +
-                ", transactionDate=" + transactionDate +
-                '}';
-    }
 }

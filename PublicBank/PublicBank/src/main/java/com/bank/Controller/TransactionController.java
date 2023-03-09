@@ -2,18 +2,21 @@ package com.bank.Controller;
 
 import com.bank.DTOs.TransActionDTO;
 import com.bank.DTOs.ViewDTO.TransActionView;
+import com.bank.DTOs.ViewDTO.TransactionsList;
 import com.bank.Entity.Account;
 
+import com.bank.ErrorHandler.ErrorMessage;
 import com.bank.Filters.TransActionsFilter;
 import com.bank.Repository.AccountRepo;
 import com.bank.Repository.TransactionRepo;
+import com.bank.ServiceImple.AccountImple;
 import com.bank.ServiceImple.TransactionImple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 
 
@@ -21,6 +24,8 @@ import java.util.List;
 @RequestMapping("/bank/transaction/")
 public class TransactionController {
 
+    @Autowired
+    AccountImple accountImple;
     @Autowired
     TransactionImple transactionImple;
 
@@ -37,41 +42,101 @@ public class TransactionController {
 
     }
     @GetMapping("getAllTransAction")
-    public ResponseEntity<Object> getAllTransaction(@RequestBody TransActionDTO transActionDTO) {
-
-        //List<TransActionsFilter> transaction = transactionImple.getAllTransAction(transActionDTO);
+    public ResponseEntity<Object> getAllTransaction(@RequestBody TransActionsFilter transActionsFilter) {
 
 
-//        List <Transaction> getAllTransactionAmount = transactionRepo.
-//                findByTransactionAmountAndDiscriptionOrderByTransactionDateDesc(transActionDTO.getTransactionAmount(),transActionDTO.getDiscription());
+//
+//        if(transActionsFilter.getTransActionAmount() !=0 && transActionsFilter.getAccountNumber() !=0 &&transActionsFilter.getDescription() !=null ){
+//
+//            List<TransActionsFilter> getTransActionWithOutAccountHolderNameName =
+//                    transactionImple.getAllTransAction(transactionRepo.findByFromAccount_AccountNumberAndTransactionAmountAndDiscriptionOrderByTransactionDateDesc
+//                            (transActionsFilter.getAccountNumber(), transActionsFilter.getTransActionAmount(), transActionsFilter.getDescription()));
+//            return new ResponseEntity<>(getTransActionWithOutAccountHolderNameName, HttpStatus.CREATED);
+//        }
+//
+//        else if(transActionsFilter.getAccountNumber() == 0 && transActionsFilter.getTransActionAmount() ==0 ){
+//            List<TransActionsFilter> getWithOutAccountNumberAndTransactionAmount = transactionImple.getAllTransAction
+//                    (transactionRepo.findByDiscriptionOrderByTransactionDateDesc(transActionsFilter.getDescription()));
+//            return new ResponseEntity<>(getWithOutAccountNumberAndTransactionAmount, HttpStatus.CREATED);
+//        }
+//
+//        else if(transActionsFilter.getAccountNumber() == 0 && transActionsFilter.getDescription()==null ){
+//            List<TransActionsFilter> getTransactionWithOutDescriptionAndAmount = transactionImple.getAllTransAction(transactionRepo.
+//                    findByTransactionAmountOrderByTransactionDateDesc(transActionsFilter.getTransActionAmount()));
+//            return new ResponseEntity<>(getTransactionWithOutDescriptionAndAmount, HttpStatus.CREATED);
+//        }
+//
+//        else if(transActionsFilter.getTransActionAmount() ==0 && transActionsFilter.getDescription()==null ){
+//            List<TransActionsFilter> getAll = transactionImple.getAllTransAction(transactionRepo.findAll());
+//            return  new ResponseEntity<>(getAll, HttpStatus.CREATED);
+//
+//        }
+//
+//        else if(transActionsFilter.getDescription()==null ){
+//            List<TransActionsFilter> getTransactionWithOutDescription = transactionImple.getAllTransAction(transactionRepo.
+//                    findByTransactionAmountAndFromAccount_AccountNumberOrderByTransactionDateDesc(transActionsFilter.getTransActionAmount(),
+//                            transActionsFilter.getAccountNumber()));
+//            return new ResponseEntity<>(getTransactionWithOutDescription, HttpStatus.CREATED);
+//        }
+//
+//        else if(transActionsFilter.getTransActionAmount() ==0){
+//            List<TransActionsFilter> getTransactionWithOutAmount =
+//            transactionImple.getAllTransAction(transactionRepo. findByFromAccount_AccountNumberAndDiscriptionOrderByTransactionDateDesc
+//                    (transActionsFilter.getAccountNumber(),transActionsFilter.getDescription()));
+//            return new ResponseEntity<>(getTransactionWithOutAmount, HttpStatus.CREATED);
+//        }
+//
+//        else if (transActionsFilter.getAccountNumber() ==0){
+//            List<TransActionsFilter> getWithoutAccountNumber =
+//                    transactionImple.getAllTransAction(transactionRepo.findByTransactionAmountAndDiscriptionOrderByTransactionDateDesc
+//                            (transActionsFilter.getTransActionAmount(),
+//                            transActionsFilter.getDescription()));
+//            return new ResponseEntity<>(getWithoutAccountNumber, HttpStatus.CREATED);
+//        }
+//
+//
+//
+//
+//
+//        else {
+//            List<TransActionsFilter> getAll = transactionImple.getAllTransAction(transactionRepo.findAll());
+//        return  new ResponseEntity<>(getAll, HttpStatus.CREATED);
+//        }
+        TransactionsList getAllTransActions = transactionImple.getAllImplementation(transActionsFilter);
 
-        if (transActionDTO.getFromAccount() == 0 && transActionDTO.getDiscription()==null){
-            List<TransActionsFilter> transActionsFilters = transactionImple.getAllTransAction(transactionRepo.
-                    findByTransactionAmountAndDiscriptionOrderByTransactionDateDesc(transActionDTO.getTransactionAmount(), transActionDTO.getDiscription()));
-            return new ResponseEntity<>(transActionsFilters, HttpStatus.CREATED);
-        }
+        if (getAllTransActions != null && (transActionsFilter.getDescription() !=("Paytm".toUpperCase())|| transActionsFilter.getDescription() !=("GPay".toUpperCase()))) return new ResponseEntity<>(getAllTransActions, HttpStatus.CREATED);
+        else return new ResponseEntity<>("NetWork is Not Linked",HttpStatus.INTERNAL_SERVER_ERROR);
 
-        else if (transActionDTO.getDiscription() == null && transActionDTO.getTransactionAmount()==0) {
-            List<TransActionsFilter> transActionWithOutDescription =
-                    transactionImple.findByFilterField(transactionRepo.findByTransactionAmountOrderByTransactionDateDesc(transActionDTO.getTransactionAmount()));
-            return new ResponseEntity<>(transActionWithOutDescription, HttpStatus.CREATED);
-        } else if (transActionDTO.getTransactionAmount()==0) {
-            List<TransActionsFilter> transActionsWithOutAmount = transactionImple.getAllTransAction(
-                    transactionRepo.findByDiscriptionOrderByTransactionDateDesc(transActionDTO.getDiscription()));
-            return new ResponseEntity<>(transActionsWithOutAmount, HttpStatus.CREATED);
-
-        } else {
-            List<TransActionsFilter> findAllTransAction = transactionImple.getAllTransAction(
-                    transactionRepo.findAll());
-
-            return new ResponseEntity<>(findAllTransAction, HttpStatus.CREATED);
-        }
     }
 
     public ResponseEntity<Object> isActive(TransActionDTO transActionDTO){
        return  null;
     }
 
+    @PostMapping("updateBalance")
+    public ResponseEntity<Object> UpdateBalance(@RequestBody  TransActionDTO transActionDTO){
+         if(accountRepo.findByAccountNumber(transActionDTO.getFromAccount())!=null) {
+             boolean b = accountImple.updateAccount(transActionDTO.getFromAccount(), transActionDTO.getTransactionAmount());
+
+             if (b != false) return new ResponseEntity<>(true, HttpStatus.CREATED);
+             else return new ResponseEntity<>(new ErrorMessage("Check your id"), HttpStatus.METHOD_NOT_ALLOWED);
+         }
+         else return new ResponseEntity<>(new ErrorMessage("Check your id"), HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @GetMapping("getAllTransActions")
+    public ResponseEntity<Object> getAllTransActions(@RequestBody TransActionsFilter transActionsFilter){
 
 
-}
+            if(transActionsFilter.getAccountNumber()!=0) {
+                TransactionsList transactionsList = transactionImple.getAllTransActions(transActionsFilter);
+                return new ResponseEntity<>(transactionsList, HttpStatus.CREATED);
+            }
+            else return new ResponseEntity<>(new ErrorMessage("Account number is needed"), HttpStatus.METHOD_NOT_ALLOWED);
+        }
+
+
+    }
+
+
+

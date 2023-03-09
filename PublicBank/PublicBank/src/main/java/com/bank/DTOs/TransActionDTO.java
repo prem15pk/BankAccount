@@ -3,6 +3,7 @@ package com.bank.DTOs;
 
 import org.springframework.lang.Nullable;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TransActionDTO {
@@ -22,13 +23,13 @@ public class TransActionDTO {
     private  boolean isActive;
 
     @Nullable
-    private Date date;
+    private LocalDateTime date;
 
 
     public TransActionDTO() {
     }
 
-    public TransActionDTO(int fromAccount, int toAccount, int transactionAmount, @Nullable String discription, boolean isActive, Date date) {
+    public TransActionDTO(int fromAccount, int toAccount, int transactionAmount, @Nullable String discription, boolean isActive, LocalDateTime date) {
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
         this.transactionAmount = transactionAmount;
@@ -78,11 +79,11 @@ public class TransActionDTO {
         isActive = active;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

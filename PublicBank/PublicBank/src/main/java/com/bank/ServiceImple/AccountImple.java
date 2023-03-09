@@ -1,21 +1,28 @@
 package com.bank.ServiceImple;
 
 import com.bank.DTOs.AccountDTO;
+import com.bank.DTOs.TransActionDTO;
 import com.bank.Entity.Account;
 
 
 import com.bank.Entity.Customer;
+import com.bank.Entity.Transaction;
 import com.bank.Repository.AccountRepo;
 import com.bank.Repository.CustomerRepo;
+import com.bank.Repository.TransactionRepo;
 import com.bank.Service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Service
+@Service()
 public class AccountImple implements AccountService {
+
+    @Autowired
+    TransactionRepo transactionRepo;
      @Autowired
      AccountRepo accountRepo;
 
@@ -48,10 +55,25 @@ public class AccountImple implements AccountService {
         return false;
     }
 
-    public boolean updateAccount(int id , AccountDTO accountDTO){
-       Account a = accountRepo.findById(id).orElse(null);
-       a.setBalance(accountDTO.getBlance());
-        accountRepo.save(a);
+    public boolean updateAccount(int id , int balance){
+       Account account = accountRepo.findByAccountNumber(id);
+        account.setBalance(account.getBalance()+balance);
+        accountRepo.save(account);
+
+        /**/
+        /**/
+
+        Transaction transAction = new Transaction();
+        transAction.setFromAccount(account);
+        transAction.setDiscription("Deposit");
+        transAction.setActive(true);
+        transAction.setTransactionDate(LocalDateTime.now());
+        transAction.setTransactionAmount(balance);
+        transAction.setCustomerId(account.getId());
+        transAction.setBlance(account.getBalance());
+
+        transactionRepo.save(transAction);
+
             return  true;
 
     }
@@ -72,7 +94,7 @@ public class AccountImple implements AccountService {
             account.setBalance(accountDTO.getBlance());
             account.setAccountType(accountDTO.getAccountType());
             account.setCustomer(c);
-            account.setCreatingDate(account.getCreatingDate());
+            account.setCreatingDate(LocalDateTime.now());
             account.setUpdatedDate(account.getUpdatedDate());
             account.setAccountId(account.getAccountId());
             accountRepo.save(account);

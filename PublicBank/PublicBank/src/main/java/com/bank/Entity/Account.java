@@ -1,10 +1,14 @@
 package com.bank.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.intellij.lang.annotations.Pattern;
+import org.intellij.lang.annotations.RegExp;
 
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
@@ -17,6 +21,8 @@ public class Account {
     private int id;
     @GeneratedValue
     private  int accountNumber=getRandomNumber(1000000000,99999999);
+
+
     private String accountName;
 
     private String ifseCode;
@@ -28,17 +34,12 @@ public class Account {
 
     @ManyToOne(targetEntity = Customer.class,cascade = CascadeType.ALL)
     private Customer customer;
-    @Temporal(TIMESTAMP)
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private Date creatingDate;
 
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private Date updatedDate;
-@PrePersist
- private  void onCreat(){
-     updatedDate=new Date();
-     creatingDate = new Date();
- }
+    private LocalDateTime creatingDate;
+
+
+    private LocalDateTime updatedDate;
+
 
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
@@ -48,7 +49,7 @@ public class Account {
 
 
     public Account(int id, int accountNumber, String accountName, String ifseCode,
-                   int balance, String accountType, Customer customer, Date creatingDate, Date updatedDate) {
+                   int balance, String accountType, Customer customer, LocalDateTime creatingDate, LocalDateTime updatedDate) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.accountName = accountName;
@@ -94,19 +95,19 @@ public class Account {
         this.accountName = accountName;
     }
 
-    public Date getCreatingDate() {
+    public LocalDateTime getCreatingDate() {
         return creatingDate;
     }
 
-    public void setCreatingDate(Date creatingDate) {
+    public void setCreatingDate(LocalDateTime creatingDate) {
         this.creatingDate = creatingDate;
     }
 
-    public Date getUpdatedDate() {
+    public LocalDateTime getUpdatedDate() {
         return updatedDate;
     }
 
-    public void setUpdatedDate(Date updatedDate) {
+    public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
     }
 

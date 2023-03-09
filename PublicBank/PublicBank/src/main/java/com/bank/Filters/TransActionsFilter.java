@@ -4,8 +4,8 @@ package com.bank.Filters;
 import com.sun.istack.NotNull;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TransActionsFilter {
@@ -17,21 +17,25 @@ public class TransActionsFilter {
 
     @NotNull
     private int accountNumber;
-    @Nullable
-    private String Description;
+    private String description;
 
-    @Nullable
-    private Date date;
+
+    private String date;
+
+    private  int transActionAmount;
     public TransActionsFilter() {
     }
 
-    public TransActionsFilter(@Nullable String accountHolderName, int accountNumber, @Nullable String description, @Nullable Date date) {
+
+
+    public TransActionsFilter(String accountHolderName, int accountNumber, String description, String date, int transActionAmount) {
         AccountHolderName = accountHolderName;
         this.accountNumber = accountNumber;
-        Description = description;
+        this.description = description;
         this.date = date;
+        this.transActionAmount = transActionAmount;
     }
-
+    //DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
     public int getAccountNumber() {
         return accountNumber;
     }
@@ -41,11 +45,11 @@ public class TransActionsFilter {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     @Nullable
@@ -57,12 +61,24 @@ public class TransActionsFilter {
         AccountHolderName = accountHolderName;
     }
 
-    @Nullable
-    public Date getDate() {
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(@Nullable Date date) {
+    public void setDate(@Nullable String date) {
         this.date = date;
     }
+
+    public int getTransActionAmount() {
+        return transActionAmount;
+    }
+
+    public void setTransActionAmount(int transActionAmount) {
+        this.transActionAmount = transActionAmount;
+    }
+
+
+
+
 }

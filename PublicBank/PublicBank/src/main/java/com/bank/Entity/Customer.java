@@ -1,6 +1,9 @@
 package com.bank.Entity;
 
+import org.intellij.lang.annotations.Pattern;
+
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.List;
 
 @Entity
@@ -9,6 +12,8 @@ public class Customer {
     @Id
 
     private int id;
+
+
     private String name;
 
 

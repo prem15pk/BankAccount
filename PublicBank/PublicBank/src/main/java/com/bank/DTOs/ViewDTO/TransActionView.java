@@ -1,5 +1,7 @@
 package com.bank.DTOs.ViewDTO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TransActionView {
@@ -11,13 +13,13 @@ public class TransActionView {
     private int transactionAmount;
 
     private int currentBalance;
-    private Date transactionDate;
+    private LocalDateTime transactionDate;
     private String discription;
     public TransActionView() {
     }
 
     public TransActionView(int transActionId, int balance, int toAccountNo, int fromAccount, int transactionAmount,
-                           int currentBalance, Date transactionDate, String discription) {
+                           int currentBalance, LocalDateTime transactionDate, String discription) {
         this.transActionId = transActionId;
         this.balance = balance;
         this.toAccountNo = toAccountNo;
@@ -69,11 +71,11 @@ public class TransActionView {
         this.transactionAmount = transactionAmount;
     }
 
-    public Date getTransactionDate(Date transactionDate) {
+    public LocalDateTime getTransactionDate(LocalDateTime transactionDate) {
         return this.transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(LocalDateTime transactionDate) {
         this.transactionDate = transactionDate;
     }
 
@@ -93,7 +95,7 @@ public class TransActionView {
         this.currentBalance = currentBalance;
     }
 
-    public Date getTransactionDate() {
+    public LocalDateTime getTransactionDate() {
         return transactionDate;
     }
 
