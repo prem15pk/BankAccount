@@ -7,6 +7,7 @@ import com.bank.Entity.Account;
 import com.bank.Entity.Pots;
 import com.bank.Entity.TransActionToAccount;
 import com.bank.Entity.Transaction;
+import com.bank.ErrorHandler.ErrorMessage;
 import com.bank.Filters.TransActionsFilter;
 import com.bank.Repository.AccountRepo;
 import com.bank.Repository.PotsRepository;
@@ -64,6 +65,7 @@ public class TransactionImple   {
 
 
         Transaction transaction = new Transaction();
+
         transaction.setDiscription(transActionDTO.getDiscription());
         transaction.setFromAccount(fromAccount);
         transaction.setToAccount(toAccount);
@@ -138,21 +140,30 @@ public class TransactionImple   {
     public List<TransActionsFilter> getAllTransAction(List<Transaction> transactions) {
         List<TransActionsFilter> transActionsFilters =new ArrayList<>();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        for (Transaction transaction : transactions) {
-            TransActionsFilter transActionsFilter = new TransActionsFilter();
-            transActionsFilter.setAccountHolderName(transaction.getFromAccount().getCustomer().getName());
-            transActionsFilter.setAccountNumber(transaction.getFromAccount().getAccountNumber());
-            transActionsFilter.setDate((transaction.getTransactionDate()).format(myFormatObj));
-            transActionsFilter.setTransActionAmount(transaction.getTransactionAmount());
-            transActionsFilter.setDescription(transaction.getDiscription());
-            transActionsFilters.add(transActionsFilter);
-        }
+        transactions.stream().forEach(trans->{
+            TransActionsFilter filter = new TransActionsFilter();
+            filter.setAccountHolderName(trans.getFromAccount().getCustomer().getName());
+            filter.setAccountNumber(trans.getFromAccount().getAccountNumber());
+            filter.setDate(trans.getTransactionDate().format(myFormatObj));
+            filter.setTransActionAmount(trans.getTransactionAmount());
+            filter.setDescription(trans.getDiscription());
+            transActionsFilters.add(filter);
+        });
+//        for (Transaction transaction : transactions) {
+//            TransActionsFilter transActionsFilter = new TransActionsFilter();
+//            transActionsFilter.setAccountHolderName(transaction.getFromAccount().getCustomer().getName());
+//            transActionsFilter.setAccountNumber(transaction.getFromAccount().getAccountNumber());
+//            transActionsFilter.setDate((transaction.getTransactionDate()).format(myFormatObj));
+//            transActionsFilter.setTransActionAmount(transaction.getTransactionAmount());
+//            transActionsFilter.setDescription(transaction.getDiscription());
+//            transActionsFilters.add(transActionsFilter);
+//        }
 
         return transActionsFilters;
     }
 
     //here Description in Compulsory
-    public TransactionsList getAllImplementation(TransActionsFilter transActionsFilter) {
+    public Object getAllImplementation(TransActionsFilter transActionsFilter) {
         TransactionsList transactionsList = new TransactionsList();
         if(transActionsFilter.getDescription().equals("Paytm") ||transActionsFilter.getDescription().equals("GPay")
                 ||(transActionsFilter.getDescription().equals("Deposit")) ) {
@@ -212,7 +223,7 @@ public class TransactionImple   {
                 return transactionsList;
             }
         }
-        else return null;
+        else return new ErrorMessage("not Linked");
 
     }
 

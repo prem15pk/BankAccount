@@ -44,7 +44,7 @@ public class LoneImple {
         lone.setLoneNumber(lone.getLoneNumber());
         lone.setGettingLone(LocalDate.now().plusMonths(loneDTO.getDuration()).atStartOfDay());
 
-        lone.setEndDate(LocalDateTime.from(LocalDate.now().plusMonths(loneDTO.getDuration())));
+        lone.setEndDate(LocalDate.from(LocalDate.from(LocalDate.now().plusMonths(loneDTO.getDuration()))));
 
         loneRepo.save(lone);
 
@@ -117,6 +117,7 @@ public class LoneImple {
                 int monthlyEmi = (l.getLoneAmount() / l.getDuration());
                 loneViewDTO.setMonthlyEmi(monthlyEmi);
                 int countEmiPaid=0;
+
                 for(EmiList emiList :emiLists) {
                     //int countEmiPaid=0;
                     if (emiList.isPaid()) {
@@ -142,16 +143,23 @@ public class LoneImple {
 
         ViewLoneDTO viewLoneDTO = new ViewLoneDTO();
         viewLoneDTO.setCustomerLoans(loneLists);
-        for (int i = 0; i < lone.size(); i++) {
-            EmiList emiList = lone.get(i);
+//        for (int i = 0; i < lone.size(); i++) {
+//            EmiList emiList = lone.get(i);
+//            LoneList loneList = new LoneList();
+//
+//            loneList.setLoneNumber(emiList.getLoneNumber());
+//            loneList.setDueDate(LocalDate.now());
+//            loneList.setPaid(false);
+//            loneLists.add(i, loneList);
+//
+//        }
+        lone.stream().forEach(l->{
             LoneList loneList = new LoneList();
-
-            loneList.setLoneNumber(emiList.getLoneNumber());
+            loneList.setLoneNumber(l.getLoneNumber());
             loneList.setDueDate(LocalDate.now());
             loneList.setPaid(false);
-            loneLists.add(i, loneList);
-
-        }
+            loneLists.add(loneList);
+        });
 
         return viewLoneDTO;
     }
@@ -163,16 +171,23 @@ public class LoneImple {
 
         ViewLoneDTO viewLoneDTO = new ViewLoneDTO();
         viewLoneDTO.setCustomerLoans(loneLists);
-        for (int i = 0; i < lone.size(); i++) {
-            EmiList emiList = lone.get(i);
+        lone.stream().forEach(list->{
             LoneList loneList = new LoneList();
-
-            loneList.setLoneNumber(emiList.getLoneNumber());
-            loneList.setDueDate(emiList.getDateOfMonth());
-            loneList.setPaid(emiList.isPaid());
-            loneLists.add(i, loneList);
-
-        }
+            loneList.setLoneNumber(list.getLoneNumber());
+            loneList.setDueDate(list.getDateOfMonth());
+            loneList.setPaid(list.isPaid());
+            loneLists.add(loneList);
+        });
+//        for (int i = 0; i < lone.size(); i++) {
+//            EmiList emiList = lone.get(i);
+//            LoneList loneList = new LoneList();
+//
+//            loneList.setLoneNumber(emiList.getLoneNumber());
+//            loneList.setDueDate(emiList.getDateOfMonth());
+//            loneList.setPaid(emiList.isPaid());
+//            loneLists.add(i, loneList);
+//
+//        }
 
         return viewLoneDTO;
 

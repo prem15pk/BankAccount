@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.PrePersist;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -17,6 +18,9 @@ public class LoneDTO {
     private int loneAmount;
     private int interest ;
 
+
+    @Min(value = 12, message = "Duration must be above 12")
+    @Max(value=26, message = "Duration must be below 26")
     private int  duration ;
 
     private int customer;

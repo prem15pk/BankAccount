@@ -5,8 +5,11 @@ import com.bank.ServiceImple.CustomerImple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +20,8 @@ public class CustomerController {
     CustomerImple customerImple;
 
     @PostMapping("createCustomer")
-    public ResponseEntity<Object> saveCustomer(@RequestBody Customer customer){
+     @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Object> saveCustomer(@RequestBody @Valid Customer customer){
         Customer u = customerImple.saveCustomer(customer);
         if(u!=null)return new ResponseEntity<>(u, HttpStatus.CREATED);
 
@@ -27,6 +31,7 @@ public class CustomerController {
 
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Customer> getAll(){
         return customerImple.getAllCustomer();
     }

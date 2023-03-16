@@ -1,8 +1,7 @@
 package com.bank.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.intellij.lang.annotations.Pattern;
-import org.intellij.lang.annotations.RegExp;
+
 
 
 import javax.persistence.*;

@@ -26,7 +26,7 @@ public class Lone {
 
     private LocalDateTime gettingLone ;
 
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
 //    @PrePersist
 //    private  void onCreate(){
@@ -45,7 +45,7 @@ public class Lone {
     public Lone() {
     }
 
-    public Lone(int id, int loneAmount, int loneNumber, int interest, int duration, Customer customer, LocalDateTime gettingLone, LocalDateTime endDate) {
+    public Lone(int id, int loneAmount, int loneNumber, int interest, int duration, Customer customer, LocalDateTime gettingLone, LocalDate endDate) {
         this.id = id;
         this.loneAmount = loneAmount;
         this.loneNumber = loneNumber;
@@ -112,11 +112,11 @@ public class Lone {
         this.gettingLone = gettingLone;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }

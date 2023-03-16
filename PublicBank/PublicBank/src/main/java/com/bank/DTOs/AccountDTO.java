@@ -1,12 +1,16 @@
 package com.bank.DTOs;
 
 
+import javax.validation.constraints.Pattern;
 
 public class AccountDTO {
+
 
     private String accountName;
     private String ifseCode;
     private String accountType;
+
+
     private int blance;
     private int  customerId;
 

@@ -102,9 +102,9 @@ public class TransactionController {
 //            List<TransActionsFilter> getAll = transactionImple.getAllTransAction(transactionRepo.findAll());
 //        return  new ResponseEntity<>(getAll, HttpStatus.CREATED);
 //        }
-        TransactionsList getAllTransActions = transactionImple.getAllImplementation(transActionsFilter);
+        Object getAllTransActions = transactionImple.getAllImplementation(transActionsFilter);
 
-        if (getAllTransActions != null && (transActionsFilter.getDescription() !=("Paytm".toUpperCase())|| transActionsFilter.getDescription() !=("GPay".toUpperCase()))) return new ResponseEntity<>(getAllTransActions, HttpStatus.CREATED);
+        if (getAllTransActions != null && (transActionsFilter.getDescription() !=("Paytm".toUpperCase())|| transActionsFilter.getDescription() !=("GPay".toUpperCase()) || transActionsFilter.getDescription()==null)) return new ResponseEntity<>(getAllTransActions, HttpStatus.CREATED);
         else return new ResponseEntity<>("NetWork is Not Linked",HttpStatus.INTERNAL_SERVER_ERROR);
 
     }

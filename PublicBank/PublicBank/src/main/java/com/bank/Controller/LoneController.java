@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,7 +29,7 @@ public class LoneController {
     LoneImple loneImple;
 
     @PostMapping("createLone")
-    public ResponseEntity<Object> createAccount(@RequestBody LoneDTO loneDTO) {
+    public ResponseEntity<Object> createAccount(@RequestBody @Valid LoneDTO loneDTO) {
 
         LoneDTO lone = loneImple.saveLone(loneDTO);
 
